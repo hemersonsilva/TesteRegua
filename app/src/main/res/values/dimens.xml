@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="scale_line_small">10dp</dimen>
+    <dimen name="scale_line_medium">25dp</dimen>
+    <dimen name="scale_line_large">50dp</dimen>
+    <dimen name="scale_text">15dp</dimen>
+    <dimen name="scale_start">10dp</dimen>
+    <dimen name="text_start_point">0dp</dimen>
+    <dimen name="text2_start_point">120dp</dimen>
+    <dimen name="line_start_point">35dp</dimen>
+    <dimen name="line2_start_point">85dp</dimen>
+</resources>
