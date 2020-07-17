@@ -60,12 +60,12 @@ class SimpleRulerView(context: Context?, attrs: AttributeSet? = null) : View(con
     /**
      * the text color
      */
-    var markTextColor = Color.BLACK
+    var markTextColor = Color.WHITE
 
     /**
      * the ruler line color
      */
-    var markColor = Color.BLACK
+    var markColor = Color.WHITE
 
     /**
      * view height
@@ -138,6 +138,10 @@ class SimpleRulerView(context: Context?, attrs: AttributeSet? = null) : View(con
      */
     private var mRulerLineWidth = 0f
 
+    private var scaleLineSmall = 0
+    private var scaleLineMedium = 0
+    private var scaleLineLarge = 0
+
     /**
      * half width
      */
@@ -203,6 +207,11 @@ class SimpleRulerView(context: Context?, attrs: AttributeSet? = null) : View(con
         textPaint.textSize = mTextSize
         mGestureDetectorCompat = GestureDetectorCompat(context, this)
         mScroller = OverScroller(context, DecelerateInterpolator())
+
+        scaleLineSmall = resources.getDimension(R.dimen.scale_line_small).toInt()
+        scaleLineMedium = resources.getDimension(R.dimen.scale_line_medium).toInt()
+        scaleLineLarge = resources.getDimension(R.dimen.scale_line_large).toInt()
+        //textStartPoint = resources.getDimension(R.dimen.text_start_point).toInt()
 
         setSelectedIndex(0)
     }
@@ -280,35 +289,66 @@ class SimpleRulerView(context: Context?, attrs: AttributeSet? = null) : View(con
             // draw line
             val remainderBy2 = i % 2
             val remainderBy5 = i % 5
-            if (i == mSelectedIndex) {
-                rulerPaint.color = highlightColor
-            } else {
-                rulerPaint.color = markColor
-            }
+            rulerPaint.color = markColor
+
             if (i < 0 || i > 200) {
                 rulerPaint.color = resources.getColor(android.R.color.transparent)
             }
 
 
-            // if(mRulerCount)
-            if (remainderBy2 == 0 && remainderBy5 == 0) {
-                canvas.drawLine(80f, x, 130f, x, rulerPaint)
-            } else if (remainderBy2 != 0 && remainderBy5 == 0) {
-                canvas.drawLine(80f, x, 130 * 3 / 4.toFloat(), x, rulerPaint)
-            } else {
-                canvas.drawLine(80f, x, 90f, x, rulerPaint)
-            }
-            canvas.drawLine(20f, x, 70f, x, rulerPaint)
+           val textStartPoint = context.resources.getDimension(R.dimen.text_start_point)
+           val text2StartPoint = context.resources.getDimension(R.dimen.text2_start_point)
+           val lineStartPoint = context.resources.getDimension(R.dimen.line_start_point)
+           val line2StartPoint = context.resources.getDimension(R.dimen.line2_start_point)
 
+
+            val size: Int = scaleLineLarge
+            val size2: Int = if (i % 10 == 0) scaleLineLarge else if (i % 5 == 0) scaleLineMedium else scaleLineSmall
+
+            canvas.drawLine(lineStartPoint, x,lineStartPoint + size, x, rulerPaint)
+
+            canvas.drawLine(line2StartPoint, x,line2StartPoint + size2, x, rulerPaint)
+
+
+
+
+            //canvas.drawLine(0F, x,start + size, x, rulerPaint)
+
+//            // if(mRulerCount)
+//            if (remainderBy2 == 0 && remainderBy5 == 0) {
+//                canvas.drawLine(80f, x, 130f, x, rulerPaint)
+//            } else if (remainderBy2 != 0 && remainderBy5 == 0) {
+//                canvas.drawLine(80f, x, 150 * 3 / 4.toFloat(), x, rulerPaint)
+//            } else {
+//                canvas.drawLine(80f, x, 100f, x, rulerPaint)
+//            }
+
+
+            if (mRulerCount > 0 && i >= 0 && i < mRulerCount) {
+                textPaint.color = markTextColor
+
+                if (i % 5 == 0) {
+                    var text: String?
+                    text = if (textList.isNotEmpty()) {
+                        val index = i / 2
+                        if (index < textList.size) {
+                            textList[index]
+                        } else {
+                            ""
+                        }
+                    } else {
+                        format(i * mIntervalValue + mMinValue)
+                    }
+                    canvas.drawText(text, 0, text.length, textStartPoint , x, textPaint)
+                }
+            }
 
 //			// draw text
             if (mRulerCount > 0 && i >= 0 && i < mRulerCount) {
                 textPaint.color = markTextColor
-                if (mSelectedIndex == i) {
-                    textPaint.color = highlightColor
-                }
+
                 if (i % 10 == 0) {
-                    var text: String? = null
+                    var text: String?
                     text = if (textList.isNotEmpty()) {
                         val index = i / 10
                         if (index < textList.size) {
@@ -319,7 +359,7 @@ class SimpleRulerView(context: Context?, attrs: AttributeSet? = null) : View(con
                     } else {
                         format(i * mIntervalValue + mMinValue)
                     }
-                    canvas.drawText(text, 0, text.length, mWidth - 50.toFloat(), x, textPaint)
+                    canvas.drawText(text, 0, text.length, text2StartPoint , x, textPaint)
                 }
             }
             x += intervalDis

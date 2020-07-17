@@ -1,0 +1,16 @@
+<resources>
+
+
+    <dimen name="text_small">12dp</dimen>
+    <dimen name="text_large">15dp</dimen>
+    <dimen name="bottom_padding_signup">16dp</dimen>
+    <dimen name="scale_line_small">7dp</dimen>
+    <dimen name="scale_line_medium">14dp</dimen>
+    <dimen name="scale_line_large">25dp</dimen>
+
+    <dimen name="line_start_point">43dp</dimen>
+    <dimen name="line2_start_point">76dp</dimen>
+    <dimen name="text_start_point">26dp</dimen>
+    <dimen name="text2_start_point">116dp</dimen>
+
+</resources>
